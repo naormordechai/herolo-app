@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header/Header';
+import injectSheet from 'react-jss';
+import { Route } from 'react-router-dom';
+import Main from './pages/Main/Main';
+import Favorite from './pages/Favorite/Favorite';
 
-function App() {
+const styles = {
+  container: {
+    maxWidth: '1280px',
+    margin: '0 auto'
+  }
+};
+
+function App(props) {
+  const { classes } = props;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.container}>
+      <Header />
+      <>
+        <Route path="/main" exact component={Main} />
+        <Route path="/favorite" exact component={Favorite}/>
+      </>
     </div>
   );
 }
 
-export default App;
+export default injectSheet(styles)(App);
