@@ -5,7 +5,22 @@ import Card from '../UI/Card/Card';
 
 const styles = {
     container: {
-        display: 'flex'
+        display: 'flex',
+        flexWrap: 'wrap',
+        '& > *': {
+            margin: '0 20px 20px',
+            minWidth:'200px'
+        }
+    },
+    boxDailyForecasts: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: '150px',
+        justifyContent: 'space-evenly',
+    },
+    cardDailyForecasts: {
+        flex: '1',
     }
 };
 
@@ -17,13 +32,61 @@ const DailyForecast = props => {
     };
 
     const { dailyForecasts, classes } = props;
+    const x = [
+        {
+            Date: "2019-09-28T07:00:00+03:00",
+            Day: { Icon: 1, IconPhrase: "Sunny", HasPrecipitation: false },
+            EpochDate: 1569643200,
+            Link: "http://www.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            MobileLink: "http://m.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            Night: { Icon: 33, IconPhrase: "Clear", HasPrecipitation: false },
+            Sources: ["AccuWeather"],
+        },
+        {
+            Date: "2019-09-28T07:00:00+03:00",
+            Day: { Icon: 1, IconPhrase: "Sunny", HasPrecipitation: false },
+            EpochDate: 1569643200,
+            Link: "http://www.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            MobileLink: "http://m.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            Night: { Icon: 33, IconPhrase: "Clear", HasPrecipitation: false },
+            Sources: ["AccuWeather"],
+        },
+        {
+            Date: "2019-09-28T07:00:00+03:00",
+            Day: { Icon: 1, IconPhrase: "Sunny", HasPrecipitation: false },
+            EpochDate: 1569643200,
+            Link: "http://www.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            MobileLink: "http://m.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            Night: { Icon: 33, IconPhrase: "Clear", HasPrecipitation: false },
+            Sources: ["AccuWeather"],
+        },
+        {
+            Date: "2019-09-28T07:00:00+03:00",
+            Day: { Icon: 1, IconPhrase: "Sunny", HasPrecipitation: false },
+            EpochDate: 1569643200,
+            Link: "http://www.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            MobileLink: "http://m.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            Night: { Icon: 33, IconPhrase: "Clear", HasPrecipitation: false },
+            Sources: ["AccuWeather"],
+        },
+        {
+            Date: "2019-09-28T07:00:00+03:00",
+            Day: { Icon: 1, IconPhrase: "Sunny", HasPrecipitation: false },
+            EpochDate: 1569643200,
+            Link: "http://www.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            MobileLink: "http://m.accuweather.com/en/gr/athens/182536/daily-weather-forecast/182536?lang=en-us",
+            Night: { Icon: 33, IconPhrase: "Clear", HasPrecipitation: false },
+            Sources: ["AccuWeather"],
+        }
+    ]
     return (
         <div className={classes.container}>
-            {dailyForecasts.map(df => (
-                <Card>
-                    <div>
+            {x.map(df => (
+                <Card styles={classes.cardDailyForecasts}>
+                    <div className={classes.boxDailyForecasts}>
                         <div>{getCurrentDayTxt(df.Date)}</div>
-                        <div>{df.Temperature.Minimum.Value} {df.Temperature.Minimum.Unit}</div>
+                        <div>38c</div>
+                        {/* <div>{df.Temperature.Minimum.Value} {df.Temperature.Minimum.Unit}</div> */}
                     </div>
                 </Card>
             ))}

@@ -1,15 +1,18 @@
 import React from 'react';
 import injectSheet from 'react-jss';
+import Button from '../UI/Button/Button';
 
 const styles = {
     container: {
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginBottom: '20px'
     }
 };
 
 const CurrenctWeather = props => {
     const { weather, location, isFavorite, handleAddFavorite, classes } = props;
+    let txtBtn = isFavorite ? 'remove from my list' : 'add to my list';
     return (
         // <div>
         //     {/* <div>{location}</div> */}
@@ -21,9 +24,7 @@ const CurrenctWeather = props => {
                 <div>Tel Aviv</div>
                 <div>38 c</div>
             </div>
-            <button onClick={handleAddFavorite}>
-                {isFavorite ? 'remove from my list' : 'add to my list'}
-            </button>
+            <Button clicked={handleAddFavorite}>{txtBtn}</Button>
         </div>
     );
 };

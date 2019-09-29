@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Autosuggest from 'react-autosuggest';
 import './auto-complete.css';
-import axios from 'axios';
 import weatherService from '../../services/weatherService';
 
 
@@ -20,7 +19,7 @@ const getSuggestions = async (value) => {
 
     const regex = new RegExp('^' + escapedValue, 'i');
 
-    const { data } = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=Y6o0cgIv7K2j6AdfJZLxeGVlRAAAnRrx&q=${value}`);
+    const { data } = await weatherService.getCities(value);
     return data.filter(city => regex.test(city.LocalizedName));
 }
 
@@ -54,7 +53,7 @@ const AutoComplete = (props) => {
 
     const onSuggestionSelected = async (e, data) => {
         const resCurrentWeather = await weatherService.getCurrentWeather(data.suggestion.Key);
-        const resDailyForecast = await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${data.suggestion.Key}?apikey=Y6o0cgIv7K2j6AdfJZLxeGVlRAAAnRrx`)
+        const resDailyForecast = await weatherService.getDailyForecasts(data.suggestion.Key);
         props.handleCurrenctWeather(resCurrentWeather.data[0].Temperature);
         props.handleDailyForecasts(resDailyForecast.data.DailyForecasts);
         props.handleCurrentLocation(data.suggestion);

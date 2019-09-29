@@ -6,7 +6,6 @@ import DailyForecast from '../../components/DailyForecast/DailyForecast';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import * as actions from '../../store/actions/index';
-import axios from 'axios';
 import { DEFAULT_CITY, DEFAULT_KEY_TEL_AVIV } from '../../constants/days';
 import weatherService from '../../services/weatherService';
 import Card from '../../components/UI/Card/Card';
@@ -17,11 +16,17 @@ const styles = {
     container: {
         maxWidth: '1280px',
         margin: '0 auto',
-        maxWidth:'80%'
+        height: 'calc(100vh - 70px)'
     },
     boxContent: {
-        border: '1px solid #c1c1c1',
+        minHeight: 'calc(100% - 122px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
     },
+    title: {
+        textAlign: 'center'
+    }
 };
 
 const getSearchParamsObj = (search) => {
@@ -47,7 +52,6 @@ const Main = props => {
     const [dailyForecasts, setDailyForecasts] = useState([]);
     const [currenctLocation, setCurrenctLocation] = useState();
     const [isFavorite, setIsFavorite] = useState(false);
-    // const [number, setNumber] = useState(0);
 
     useEffect(() => {
         fetchDataInitial()
@@ -59,14 +63,15 @@ const Main = props => {
         let res;
         let data;
         if (isEmpty(searchObj)) {
-            res = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=Y6o0cgIv7K2j6AdfJZLxeGVlRAAAnRrx&q=${DEFAULT_CITY}`);
+            res = await weatherService.getCities(DEFAULT_CITY)
             data = res.data.find(city => city.Key === DEFAULT_KEY_TEL_AVIV);
         } else {
-            res = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=Y6o0cgIv7K2j6AdfJZLxeGVlRAAAnRrx&q=${searchObj.city}`)
+            res = await weatherService.getCities(searchObj.city)
             data = res.data.find(city => city.Key === searchObj.key);
         }
         const resCurrentWeather = await weatherService.getCurrentWeather(data.Key);
-        const resDailyForecast = await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${data.key}?apikey=Y6o0cgIv7K2j6AdfJZLxeGVlRAAAnRrx`)
+        const resDailyForecast = await weatherService.getDailyForecasts(data.key);
+        debugger;
         onHandleCurrenctWeather(resCurrentWeather.data[0].Temperature);
         onHandleDailyForecasts(resDailyForecast.data.DailyForecasts);
         setCurrenctLocation(data);
@@ -77,11 +82,8 @@ const Main = props => {
         const favLocation = props.favorites.find(favorite => favorite.Key === location.Key);
         if (favLocation) {
             setIsFavorite(true)
-            return true
         } else {
             setIsFavorite(false)
-            return false
-
         }
     }
 
@@ -116,7 +118,7 @@ const Main = props => {
                 handleDailyForecasts={onHandleDailyForecasts}
                 handleCurrentLocation={onHandleCurrentLocation}
                 handleIfFavorite={onHandleIfFavorite} />
-            <Card className={classes.boxContent}>
+            <Card styles={classes.boxContent}>
                 {currenctWeather ?
                     <CurrenctWeather
                         weather={currenctWeather}
@@ -125,6 +127,7 @@ const Main = props => {
                         handleAddFavorite={onHandleAddFavorite} />
                     : null
                 }
+                <h2 className={classes.title}>Scattered clouds</h2>
                 <DailyForecast dailyForecasts={dailyForecasts} />
             </Card>
         </div>

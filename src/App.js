@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from './components/Header/Header';
 import injectSheet from 'react-jss';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import Main from './pages/Main/Main';
 import Favorite from './pages/Favorite/Favorite';
 
@@ -14,6 +14,11 @@ const styles = {
 
 function App(props) {
   const { classes } = props;
+  
+  useEffect(() => {
+    props.history.push('main')
+  }, [])
+
   return (
     <>
       <Header />
@@ -27,4 +32,4 @@ function App(props) {
   );
 }
 
-export default injectSheet(styles)(App);
+export default injectSheet(styles)(withRouter(App));

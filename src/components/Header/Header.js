@@ -23,6 +23,11 @@ const styles = {
     active: {
         opacity: '.7',
 
+    },
+    '@media(max-width:600px)': {
+        header: {
+            padding: '0 16px'
+        }
     }
 };
 
