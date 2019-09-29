@@ -58,6 +58,7 @@ const AutoComplete = (props) => {
         props.handleCurrenctWeather(resCurrentWeather.data[0].Temperature);
         props.handleDailyForecasts(resDailyForecast.data.DailyForecasts);
         props.handleCurrentLocation(data.suggestion);
+        props.handleIfFavorite(data.suggestion);
     }
 
     const inputProps = {

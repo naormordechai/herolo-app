@@ -9,14 +9,19 @@ import * as actions from '../../store/actions/index';
 import axios from 'axios';
 import { DEFAULT_CITY, DEFAULT_KEY_TEL_AVIV } from '../../constants/days';
 import weatherService from '../../services/weatherService';
+import Card from '../../components/UI/Card/Card';
 
 
 
 const styles = {
-    containerAutoComplete: {
-        margin: '150px auto 0 auto',
-        width: '600px'
-    }
+    container: {
+        maxWidth: '1280px',
+        margin: '0 auto',
+        maxWidth:'80%'
+    },
+    boxContent: {
+        border: '1px solid #c1c1c1',
+    },
 };
 
 const getSearchParamsObj = (search) => {
@@ -46,6 +51,7 @@ const Main = props => {
 
     useEffect(() => {
         fetchDataInitial()
+        setCurrentWeather(12)
     }, [])
 
     const fetchDataInitial = async () => {
@@ -64,10 +70,19 @@ const Main = props => {
         onHandleCurrenctWeather(resCurrentWeather.data[0].Temperature);
         onHandleDailyForecasts(resDailyForecast.data.DailyForecasts);
         setCurrenctLocation(data);
+        onHandleIfFavorite(data);
     }
 
-    const recognizeIfFavorite = (city) => {
-        // props.favorites.find()
+    const onHandleIfFavorite = (location) => {
+        const favLocation = props.favorites.find(favorite => favorite.Key === location.Key);
+        if (favLocation) {
+            setIsFavorite(true)
+            return true
+        } else {
+            setIsFavorite(false)
+            return false
+
+        }
     }
 
     const onHandleCurrenctWeather = (weather) => {
@@ -82,7 +97,7 @@ const Main = props => {
         setCurrenctLocation(currentLocation)
     }
 
-    const handleAddFavorite = () => {
+    const onHandleAddFavorite = () => {
         const favLocation = props.favorites.find(favorite => favorite.Key === currenctLocation.Key);
         if (favLocation) {
             props.onRemoveFavorite(favLocation)
@@ -95,20 +110,23 @@ const Main = props => {
 
     const { classes } = props;
     return (
-        <div className={classes}>
+        <div className={classes.container}>
             <AutoComplete
                 handleCurrenctWeather={onHandleCurrenctWeather}
                 handleDailyForecasts={onHandleDailyForecasts}
-                handleCurrentLocation={onHandleCurrentLocation} />
-            {currenctWeather ?
-                <div>
-                    <CurrenctWeather weather={currenctWeather} location={currenctLocation} />
-                    <button onClick={handleAddFavorite}>
-                        {isFavorite ? 'remove from my list' : 'add to my list'}
-                    </button>
-                </div> : null
-            }
-            <DailyForecast dailyForecasts={dailyForecasts} />
+                handleCurrentLocation={onHandleCurrentLocation}
+                handleIfFavorite={onHandleIfFavorite} />
+            <Card className={classes.boxContent}>
+                {currenctWeather ?
+                    <CurrenctWeather
+                        weather={currenctWeather}
+                        location={currenctLocation}
+                        isFavorite={isFavorite}
+                        handleAddFavorite={onHandleAddFavorite} />
+                    : null
+                }
+                <DailyForecast dailyForecasts={dailyForecasts} />
+            </Card>
         </div>
     );
 };

@@ -7,7 +7,22 @@ const styles = {
         height: '50px',
         background: '#333',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: '0 50px',
+        justifyContent: 'space-between',
+        color: '#fff',
+        marginBottom: '20px'
+    },
+    link: {
+        color: '#fff',
+        transtion: '1s',
+        '&:first-child': {
+            marginRight: '8px'
+        },
+    },
+    active: {
+        opacity: '.7',
+
     }
 };
 
@@ -15,8 +30,11 @@ const Header = props => {
     const { classes } = props;
     return (
         <div className={classes.header}>
-            <NavLink to="/main">Main</NavLink>
-            <NavLink to="/favorite">Favorite</NavLink>
+            <div>Herolo Weather Task</div>
+            <div>
+                <NavLink to="/main" className={classes.link} activeClassName={classes.active}>Main</NavLink>
+                <NavLink to="/favorite" className={classes.link} activeClassName={classes.active}>Favorite</NavLink>
+            </div>
         </div>
     );
 };

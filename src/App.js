@@ -6,7 +6,7 @@ import Main from './pages/Main/Main';
 import Favorite from './pages/Favorite/Favorite';
 
 const styles = {
-  container: {
+  containerContent: {
     maxWidth: '1280px',
     margin: '0 auto'
   }
@@ -15,13 +15,15 @@ const styles = {
 function App(props) {
   const { classes } = props;
   return (
-    <div className={classes.container}>
+    <>
       <Header />
-      <>
-        <Route path="/main" exact component={Main} />
-        <Route path="/favorite" exact component={Favorite}/>
-      </>
-    </div>
+      <div className={classes.containerContent}>
+        <>
+          <Route path="/main" exact component={Main} />
+          <Route path="/favorite" exact component={Favorite} />
+        </>
+      </div>
+    </>
   );
 }
 

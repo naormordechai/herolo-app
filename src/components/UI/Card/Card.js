@@ -10,10 +10,9 @@ const styles = {
 };
 
 const Card = props => {
-    const { classes, clicked } = props;
-    console.log('CLICKED', clicked);
+    const { classes, clicked, styles } = props;
     return (
-        <div className={classes.card}>
+        <div className={`${classes.card} ${styles}`}>
             {props.children}
         </div>
     )
