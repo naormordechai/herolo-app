@@ -38,10 +38,7 @@ const AutoComplete = (props) => {
     const [suggestions, setSuggestions] = useState([]);
 
     const onChange = (event, { newValue, method }) => {
-        const isEnglishLetter = /^[a-zA-Z]+$/.test(newValue);
-        if (isEnglishLetter) {
             setValue(newValue)
-        }
     };
 
     const onSuggestionsFetchRequested = async ({ value }) => {
