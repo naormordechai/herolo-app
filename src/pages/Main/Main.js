@@ -9,6 +9,7 @@ import * as actions from '../../store/actions/index';
 import { DEFAULT_CITY, DEFAULT_KEY_TEL_AVIV } from '../../constants/days';
 import weatherService from '../../services/weatherService';
 import Card from '../../components/UI/Card/Card';
+import { getSearchParamsObj, isEmpty } from '../../shared/utility';
 
 
 
@@ -29,23 +30,6 @@ const styles = {
     }
 };
 
-const getSearchParamsObj = (search) => {
-    let params = {}
-    if (search) {
-        var parts = search.substring(1).split('&');
-
-        for (var i = 0; i < parts.length; i++) {
-            var nv = parts[i].split('=');
-            if (!nv[0]) continue;
-            params[nv[0]] = nv[1] || true;
-        }
-    }
-    return params;
-}
-
-const isEmpty = (obj) => {
-    return Object.entries(obj).length === 0;
-}
 
 const Main = props => {
     const [currenctWeather, setCurrentWeather] = useState();
