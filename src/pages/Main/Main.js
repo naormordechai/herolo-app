@@ -52,10 +52,11 @@ const Main = props => {
     const [dailyForecasts, setDailyForecasts] = useState([]);
     const [currenctLocation, setCurrenctLocation] = useState();
     const [isFavorite, setIsFavorite] = useState(false);
+    const defaultCity = DEFAULT_CITY;
+    const defaultKey = DEFAULT_KEY_TEL_AVIV;
 
     useEffect(() => {
         fetchDataInitial()
-        setCurrentWeather(12)
     }, [])
 
     const fetchDataInitial = async () => {
@@ -63,18 +64,18 @@ const Main = props => {
         let res;
         let data;
         if (isEmpty(searchObj)) {
-            res = await weatherService.getCities(DEFAULT_CITY)
-            data = res.data.find(city => city.Key === DEFAULT_KEY_TEL_AVIV);
+            res = await weatherService.getCities(defaultCity)
+            data = res.data.find(city => city.Key === defaultKey);
         } else {
             res = await weatherService.getCities(searchObj.city)
             data = res.data.find(city => city.Key === searchObj.key);
         }
         const resCurrentWeather = await weatherService.getCurrentWeather(data.Key);
-        const resDailyForecast = await weatherService.getDailyForecasts(data.key);
-        debugger;
-        onHandleCurrenctWeather(resCurrentWeather.data[0].Temperature);
+        const resDailyForecast = await weatherService.getDailyForecasts(data.Key);
+        // onHandleCurrenctWeather(resCurrentWeather.data[0].Temperature);
+        onHandleCurrenctWeather(resCurrentWeather.data[0]);
         onHandleDailyForecasts(resDailyForecast.data.DailyForecasts);
-        setCurrenctLocation(data);
+        onHandleCurrentLocation(data);
         onHandleIfFavorite(data);
     }
 
@@ -127,7 +128,7 @@ const Main = props => {
                         handleAddFavorite={onHandleAddFavorite} />
                     : null
                 }
-                <h2 className={classes.title}>Scattered clouds</h2>
+                {currenctWeather ? <h2 className={classes.title}>{currenctWeather.WeatherText}</h2> : null}
                 <DailyForecast dailyForecasts={dailyForecasts} />
             </Card>
         </div>

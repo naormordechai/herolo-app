@@ -9,7 +9,7 @@ const styles = {
         flexWrap: 'wrap',
         '& > *': {
             margin: '0 20px 20px',
-            minWidth:'200px'
+            minWidth:'170px'
         }
     },
     boxDailyForecasts: {
@@ -81,12 +81,11 @@ const DailyForecast = props => {
     ]
     return (
         <div className={classes.container}>
-            {x.map(df => (
-                <Card styles={classes.cardDailyForecasts}>
+            {dailyForecasts.map(df => (
+                <Card styles={classes.cardDailyForecasts} key={df.Date}>
                     <div className={classes.boxDailyForecasts}>
                         <div>{getCurrentDayTxt(df.Date)}</div>
-                        <div>38c</div>
-                        {/* <div>{df.Temperature.Minimum.Value} {df.Temperature.Minimum.Unit}</div> */}
+                        <div>{df.Temperature.Minimum.Value} {df.Temperature.Minimum.Unit}</div>
                     </div>
                 </Card>
             ))}

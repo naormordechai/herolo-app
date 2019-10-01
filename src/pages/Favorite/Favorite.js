@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import injectSheet from 'react-jss';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -41,33 +41,40 @@ const styles = {
 };
 
 const Favorite = props => {
+    const [newFavorites, setNewFavorites] = useState([]);
 
-    const getCurrenctWeather = async (favorite) => {
-        const { data } = await weatherService.getCurrentWeather(favorite.Key);
-        debugger;
-        const weather = data[0].Temperature;
-        return (
-            <div>
-                <div>Unit:{weather.Imperial.Unit} - {weather.Imperial.Value}</div>
-                <div>Unit:{weather.Metric.Unit} - {weather.Metric.Value}</div>
-            </div>
-        )
+    const getNewsFavorites = async () => {
+        const favorites = Promise.all(props.favorites.map(async (favorite) => {
+            const newFavorite = { ...favorite };
+            const resCurrentWeather = await weatherService.getCurrentWeather(favorite.Key);
+            const weather = resCurrentWeather.data[0];
+            newFavorite.weatherText = weather.WeatherText;
+            newFavorite.temperature = weather.Temperature;
+            return newFavorite;
+        }));
+        const res = await favorites;
+        setNewFavorites(res);
     }
 
-    const { classes, favorites } = props;
+    useEffect(() => {
+        getNewsFavorites();
+    }, [])
+
+    const { classes } = props;
     return (
         <>
-            {favorites && favorites.length ?
+            {newFavorites && newFavorites.length ?
                 <div className={classes.container}>
-                    {favorites.map((favorite => (
-                        <NavLink to={{ pathname: '/main', search: `?city=${favorite.LocalizedName}&key=${favorite.Key}` }}>
+                    {newFavorites.map((favorite => (
+                        <NavLink to={{ pathname: '/main', search: `?city=${favorite.LocalizedName}&key=${favorite.Key}` }} key={favorite.Key}>
                             <Card styles={classes.cartStyleFavorite}>
                                 <div className={classes.boxFavorite}>
                                     <div>
                                         <div>{favorite.LocalizedName}</div>
-                                        <div>38c</div>
+                                        {favorite.temperature && favorite.temperature.Metric ?
+                                            <div>{favorite.temperature.Metric.Value} {favorite.temperature.Metric.Unit}</div> : null}
                                     </div>
-                                    <div>Sunny</div>
+                                    <div>{favorite.weatherText}</div>
                                 </div>
                             </Card>
                         </NavLink>
